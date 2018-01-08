@@ -1,10 +1,10 @@
 <template>
-  <div id="header">
+  <div>
     i am header
   </div>
 </template>
 <script type="text/ecmascript-6">
-  export default {}
+  export default {};
 </script>
 <style lang="stylus" scoped>
 </style>
