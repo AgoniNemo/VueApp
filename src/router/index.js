@@ -10,6 +10,11 @@ export default new Router({
   linkActiveClass: 'active',
   routes: [
     {
+      path: '/',
+      name: 'home',
+      component: goods
+    },
+    {
       path: '/goods',
       name: 'goods',
       component: goods
