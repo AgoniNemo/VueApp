@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab">
       <div class="tab-item">
-        <router-link to="/goods">商品</router-link>
+        <router-link to="/" exact>商品</router-link>
       </div>
       <div class="tab-item">
         <router-link to="/ratings">评论</router-link>
@@ -16,8 +16,10 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import header from './components/Header/Header.vue';
+
+  const ERR_OK = 0;
 
   export default {
     data() {
@@ -27,6 +29,18 @@
     },
     components: {
       'v-header': header
+    },
+    created() {
+      this.$http.get('http://127.0.0.1:8080/api/seller').then((response) => {
+        let resp = response.data;
+        if (resp.errno === ERR_OK) {
+          this.seller = resp.data;
+        };
+        console.log(this.seller);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
   };
 </script>

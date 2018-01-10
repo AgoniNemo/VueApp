@@ -13,6 +13,21 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+
+const express = require('express')
+const app = express()
+var appData = require('../data.json')
+// json卖家数据
+var seller = appData.seller
+// json商品数据
+var goods = appData.goods
+// json评论数据
+var ratings = appData.ratings
+// 编写路由
+var apiRoutes = express.Router()
+// 所有通过接口相关的api都会通过api这个路由导向到具体的路由
+app.use('/api', apiRoutes)
+
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -42,6 +57,30 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
+    },
+    // 找到devServer对象并在其后添加相关路由设置
+    before (app) {
+      app.get('/api/seller', function (req, res) {
+        // 服务端收到请求后返回给客户端一个json数据
+        res.json({
+          // 当我们数据正常时，我们通过传递errno字符为0表示数据正常
+          errno: 0,
+          // 返回json中的卖家数据
+          data: seller
+        })
+      })
+      app.get('/api/goods', function (req, res) {
+        res.json({
+          errno: 0,
+          data: goods
+        })
+      })
+      app.get('/api/ratings', function (rea, res) {
+        res.json({
+          errno: 0,
+          data: ratings
+        })
+      })
     }
   },
   plugins: [
