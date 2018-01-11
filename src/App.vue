@@ -18,6 +18,7 @@
 
 <script type="text/ecmascript-6">
   import header from './components/Header/Header.vue';
+  import './common/stylus/base.styl';
 
   const ERR_OK = 0;
 

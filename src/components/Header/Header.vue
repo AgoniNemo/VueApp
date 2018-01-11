@@ -13,9 +13,13 @@
           {{seller.description}}/{{seller.deliveryTime}}分钟送达
         </div>
         <div v-if="seller.supports" class="support">
-          <span class="icon"></span>
+          <span class="icon" :class="classMap[seller.supports[0].type]"></span>
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
+      </div>
+      <div v-if="seller.supports" class="support-count">
+        <span class="count">{{seller.supports.length}}个</span>
+        <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
     <div class="bulletin-wrapper">
@@ -24,11 +28,16 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import '../../common/stylus/icon.styl';
+
   export default {
     props: {
       seller: {
         tyte: Object
       }
+    },
+    created() {
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     }
   };
 </script>
@@ -37,8 +46,9 @@
 
     .header
       color: #fff
-      background: #000
+      background: #999
       .content-wrapper
+        position: relative
         padding: 24px 12px 18px 24px
         font-size: 0
         .avatar
@@ -70,5 +80,43 @@
             font-size: 12px
           .support
             .icon
-              
+              display: inline-block
+              vertical-align: top
+              width: 12px
+              height: 12px
+              margin-light: 4px
+              background-size: 12px 12px
+              background-repeat: no-repeat
+              &.decrease
+                bg-image('../../assets/header/decrease_1')
+              &.discount
+                bg-image('../../assets/header/discount_1')
+              &.guarantee
+                bg-image('../../assets/header/guarantee_1')
+              &.invoice
+                bg-image('../../assets/header/invoice_1')
+              &.special
+                bg-image('../../assets/header/special_1')
+            .text
+              line-height: 12px
+              font-size: 10px
+              margin-left: 2px
+        .support-count
+          position: absolute
+          right: 12px
+          bottom: 14px
+          padding: 0 8px
+          height: 24px
+          line-height: 24px
+          border-radius 14px
+          background: rgba(0,0,0,0.2)
+          text-align: center
+          .count
+            vertical-align: top
+            font-size: 10px
+          .icon-keyboard_arrow_right
+            margin-left: 2px
+            font-size: 10px
+            line-height: 24px
+
 </style>
