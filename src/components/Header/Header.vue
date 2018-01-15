@@ -17,12 +17,12 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div v-if="seller.supports" class="support-count" @click="showDetail">
+      <div v-if="seller.supports" class="support-count" @click="showDetail(true)">
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="bulletin-wrapper" @click="showDetail">
+    <div class="bulletin-wrapper" @click="showDetail(true)">
       <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="detail-close">
-        <i class="icon-close" @click="closeDetail"></i>
+        <i class="icon-close" @click="showDetail(false)"></i>
       </div>
     </div>
   </div>
@@ -56,11 +56,8 @@
       };
     },
     methods: {
-      showDetail() {
-         this.detailShow = true;
-      },
-      closeDetail() {
-         this.detailShow = false;
+      showDetail(result) {
+         this.detailShow = result;
       }
     },
     created() {
@@ -69,7 +66,7 @@
   };
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
-    @import "../../common/stylus/mixin"
+    @import "../../common/stylus/mixin";
 
     .header
       position: relative
@@ -113,7 +110,7 @@
               vertical-align: top
               width: 12px
               height: 12px
-              margin-light: 4px
+              margin-right: 4px
               background-size: 12px 12px
               background-repeat: no-repeat
               &.decrease
@@ -129,7 +126,6 @@
             .text
               line-height: 12px
               font-size: 10px
-              margin-left: 2px
         .support-count
           position: absolute
           right: 12px
