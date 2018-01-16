@@ -17,32 +17,50 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div v-if="seller.supports" class="support-count" @click="showDetail(true)">
+      <div v-if="seller.supports" class="support-count" @click="showDetail">
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="bulletin-wrapper" @click="showDetail(true)">
+    <div class="bulletin-wrapper" @click="showDetail">
       <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
     <div class="background">
       <img :src="seller.avatar" height="100%" width="100%">
     </div>
-    <div v-show="detailShow"class="detail">
-      <div class="detail-wrapper clearfix">
-        <div class="detail-main">
-          <h1 class="name">{{seller.name}}</h1>
+    <transition>
+      <div v-show="detailShow"class="detail" >
+        <div class="detail-wrapper clearfix">
+          <div class="detail-main">
+            <h1 class="name">{{seller.name}}</h1>
+            <div class="star-wrapper">
+              <star :size="48" :score="seller.score"></star>
+            </div>
+            <v-title :title="'优惠信息'"></v-title>
+            <ul v-if="seller.supports" class="supports">
+                <li class="support-item" v-for="(item,index) in seller.supports">
+                  <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+                  <span class="text">{{seller.supports[index].description}}</span>
+                </li>
+            </ul>
+            <v-title :title="'商家公告'"></v-title>
+            <div class="bulletin">
+              <p class="content">{{seller.bulletin}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="detail-close">
+          <i class="icon-close" @click="showDetail"></i>
         </div>
       </div>
-      <div class="detail-close">
-        <i class="icon-close" @click="showDetail(false)"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import '../../common/stylus/icon.styl';
+  import star from '../star/star';
+  import title from '../title/title';
 
   export default {
     props: {
@@ -56,12 +74,16 @@
       };
     },
     methods: {
-      showDetail(result) {
-         this.detailShow = result;
+      showDetail() {
+         this.detailShow = !this.detailShow;
       }
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+    },
+    components: {
+      star,
+      'v-title': title
     }
   };
 </script>
@@ -187,6 +209,7 @@
         height: 100%
         overflow: auto
         background: rgba(7,17,27,0.8)
+        background-filter: blur(10px)
         .detail-wrapper
           width: 100%
           min-height: 100%
@@ -198,6 +221,47 @@
               text-align: center
               font-size: 16px
               font-weigth: 700
+            .star-wrapper
+              margin-top: 18px
+              padding: 2px 0
+              text-align: center
+            .supports
+              width: 80%
+              margin: 0 auto
+              .support-item
+                padding: 0 12px
+                margin-bottom: 12px
+                font-size: 0
+                &:last-child
+                  margin-bottom: 0
+                .icon
+                  display: inline-block
+                  width: 16px
+                  height: 16px
+                  vertical-align: top
+                  margin-right: 6px
+                  background-size: 16px 16px
+                  background-repeat: no-repeat
+                  &.decrease
+                    bg-image('../../assets/header/decrease_2')
+                  &.discount
+                    bg-image('../../assets/header/discount_2')
+                  &.guarantee
+                    bg-image('../../assets/header/guarantee_2')
+                  &.invoice
+                    bg-image('../../assets/header/invoice_2')
+                  &.special
+                    bg-image('../../assets/header/special_2')
+                .text
+                  line-height: 16px
+                  font-size: 12px
+            .bulletin
+              width: 80%
+              margin: 0 auto
+              .content
+                padding: 0 12px
+                line-height: 24px
+                font-size: 12px
         .detail-close
           position: relative
           width: 32px
@@ -205,6 +269,13 @@
           margin: -64px auto 0 auto
           clear: both
           font-size: 32px
-
-
+      .detail.v-enter
+        opacity: 0
+      .detail.v-enter-to
+        transition: all 0.5s
+        opacity: 1
+      .detail.v-leave-active
+        transition: all 0.5s
+      .detail.v-leave-to
+        opacity: 0
 </style>

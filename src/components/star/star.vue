@@ -1,6 +1,6 @@
 <template>
   <div class="star" :class="starType">
-    <span v-for="itemClass in itemClasses" :class="itemClass" class="star-item"></span>
+    <span v-for="itemClass in itemClasses" :class="itemClass" class="star-item" track-by="$index"></span>
   </div>
 </template>
 
@@ -28,10 +28,16 @@
         let score = Math.floor(this.score * 2) / 2;
         let hasDecimal = score % 1 !== 0;
         let integer = Math.floor(score);
-        for (let i = 0; i < integer; i++) {
-           result.push()
+        for (var i = 0; i < integer; i++) {
+           result.push(CLS_ON);
         }
-
+        if (hasDecimal) {
+          result.push(CLS_HALF);
+        }
+        while (result.length < LENGTH) {
+          result.push(CLS_OFF);
+        }
+        return result;
       }
     }
   };
@@ -53,7 +59,6 @@
         background-size: 20px 20px
         &:last-child
           margin-right: 0
-          margin-light
         &.on
           bg-image('../../assets/star/star48_on')
         &.half
@@ -68,7 +73,6 @@
         background-size: 15px 15px
         &:last-child
           margin-right: 0
-          margin-light
         &.on
           bg-image('../../assets/star/star36_on')
         &.half
@@ -83,7 +87,6 @@
         background-size: 10px 10px
         &:last-child
           margin-right: 0
-          margin-light
         &.on
           bg-image('../../assets/star/star24_on')
         &.half
