@@ -32,12 +32,11 @@
       'v-header': header
     },
     created() {
-      this.$http.get('http://127.0.0.1:8080/api/seller').then((response) => {
+      this.$http.get('api/seller').then((response) => {
         let resp = response.data;
         if (resp.errno === ERR_OK) {
           this.seller = resp.data;
         };
-        console.log(this.seller);
       })
       .catch(function (error) {
         console.log(error);

@@ -10,7 +10,32 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {};
+  const ERR_OK = 0;
+
+  export default {
+    props: {
+      seller: {
+        type: Object
+      }
+    },
+    data() {
+      return {
+        goods: []
+      };
+    },
+    created() {
+      this.$http.get('api/goods').then((response) => {
+        let resp = response.data;
+        if (resp.errno === ERR_OK) {
+          this.goods = resp.data;
+        };
+        console.log(this.goods);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+  };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
