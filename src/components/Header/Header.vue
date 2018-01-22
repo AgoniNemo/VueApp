@@ -58,9 +58,9 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import '../../common/stylus/icon.styl';
-  import star from '../star/star';
-  import title from '../title/title';
+  import '@/common/stylus/icon.styl';
+  import star from 'components/star/star';
+  import title from 'components/title/title';
 
   export default {
     props: {
