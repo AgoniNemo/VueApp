@@ -114,26 +114,30 @@
         }
       },
       beforeEnter(el) {
-        console.log(el.getElementsByClassName('inner-hook')[0]);
+        console.log(el);
         let count = this.balls.length;
         while (count--) {
           let ball = this.balls[count];
           if (ball.show) {
             let rect = ball.el.getBoundingClientRect();
+            console.log(`left:${rect.left} top:${rect.top} `);
             let x = rect.left - 32;
             let y = -(window.innerHeight - rect.top - 22);
+            console.log(`x:${x} y:${y} `);
             el.style.display = '';
             el.style.webkitTransform = `translate3d(0,${y}px,0)`;
             el.style.transform = `translate3d(0,${y}px,0)`;
             let inner = el.getElementsByClassName('inner-hook')[0];
-            inner.style.webkitTransform = `translate3d(0,${x}px,0)`;
-            inner.style.transform = `translate3d(0,${x}px,0)`;
+            inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+            inner.style.transform = `translate3d(${x}px,0,0)`;
+            console.log(inner);
           }
         }
       },
       enter(el) {
+        console.log('enter');
         /* eslint-disable no-unused-vars */
-        let rf = el.offestHeight;
+        let rf = el.offsetHeight;
         this.$nextTick(() => {
           el.style.webkitTransform = 'translate3d(0,0,0)';
           el.style.transform = 'translate3d(0,0,0)';
@@ -143,6 +147,7 @@
         });
       },
       afterEnter(el) {
+        console.log(el);
         let ball = this.dropBalls.shift();
         if (ball) {
           ball.show = false;
@@ -248,11 +253,11 @@
         left: 32px
         bottom: 22px
         z-index: 200
-        transition: all 0.4s
+        transition: all 0.5s cubic-bezier(0.49,-0.29,0.75,0.41)
         .inner
           width: 16px
           height: 16px
           border-radius: 50%
           background: rgb(0,160,220)
-          transition: all 0.4s
+          transition: all 0.5s linear
 </style>
