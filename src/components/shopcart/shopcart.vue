@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -22,12 +22,33 @@
           </div>
       </transition>
     </div>
-
+    <transition>
+      <div class="shopcart-list" v-show="listShow">
+        <div class="list-header">
+            <h1 class="title">购物车</h1>
+            <span class="empty">清空</span>
+        </div>
+        <div class="list-content">
+          <ul>
+            <li class="food" v-for="food in selectFoods">
+              <span class="name">{{food.name}}</span>
+              <div class="price">
+                <span>¥{{food.price*food.count}}</span>
+              </div>
+              <div class="cartcontrol-wrapper">
+                <cartcontrol :food="food"></cartcontrol>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import '@/common/stylus/icon.styl';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
 
   export default {
     props: {
@@ -65,7 +86,8 @@
             show: false
           }
         ],
-        dropBalls: []
+        dropBalls: [],
+        fold: true
       };
     },
     computed: {
@@ -99,6 +121,16 @@
         } else {
           return 'enough';
         }
+      },
+      listShow() {
+        if (!this.totalCount) {
+          this.fold = true;
+          console.log(' if listShow:' + this.fold);
+          return false;
+        }
+        let show = !this.fold;
+        console.log(' return listShow:' + this.fold);
+        return show;
       }
     },
     methods: {
@@ -113,29 +145,30 @@
             }
         }
       },
+      toggleList() {
+        if (!this.totalCount) {
+          return;
+        }
+        this.fold = !this.fold;
+      },
       beforeEnter(el) {
-        console.log(el);
         let count = this.balls.length;
         while (count--) {
           let ball = this.balls[count];
           if (ball.show) {
             let rect = ball.el.getBoundingClientRect();
-            console.log(`left:${rect.left} top:${rect.top} `);
             let x = rect.left - 32;
             let y = -(window.innerHeight - rect.top - 22);
-            console.log(`x:${x} y:${y} `);
             el.style.display = '';
             el.style.webkitTransform = `translate3d(0,${y}px,0)`;
             el.style.transform = `translate3d(0,${y}px,0)`;
             let inner = el.getElementsByClassName('inner-hook')[0];
             inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
             inner.style.transform = `translate3d(${x}px,0,0)`;
-            console.log(inner);
           }
         }
       },
       enter(el) {
-        console.log('enter');
         /* eslint-disable no-unused-vars */
         let rf = el.offsetHeight;
         this.$nextTick(() => {
@@ -147,18 +180,21 @@
         });
       },
       afterEnter(el) {
-        console.log(el);
         let ball = this.dropBalls.shift();
         if (ball) {
           ball.show = false;
           el.style.display = 'none';
         }
       }
+    },
+    components: {
+      cartcontrol
     }
   };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin";
 
   .shopcart
     position: fixed
@@ -260,4 +296,58 @@
           border-radius: 50%
           background: rgb(0,160,220)
           transition: all 0.5s linear
+    .shopcart-list
+      position: absolute
+      left: 0
+      top: 0
+      z-index: -1
+      width: 100%
+      transition: all 0.3s
+      transform: translate3d(0,-100%,0)
+    .shopcart-list.v-enter-active
+        transform: translate3d(0,0,0)
+    .shopcart-list.v-leave-active
+        transform: translate3d(0,0,0)
+      .list-header
+        height: 40px
+        line-height: 40px
+        padding: 0 18px
+        background: #f3f5f7
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1)
+        .title
+          float: left
+          font-size: 14px
+          color: rgb(7,17,27)
+        .empty
+          float: right
+          font-size: 12px
+          color: rgb(0,160,220)
+      .list-content
+        padding: 0 18px
+        max-height: 217px
+        overflow: hidden
+        background: #fff
+        .food
+          position: relative
+          padding: 12px 0
+          box-sizing: border-box
+          border-1px(rgba(7,17,27,0.1))
+          .name
+            line-height: 24px
+            font-size: 14px
+            color: rgb(7,17,27)
+          .price
+            position: absolute
+            right: 90px
+            bottom: 12px
+            line-height: 24px
+            font-size: 14px
+            font-weigth: 700
+            color: rgb(240,20,20)
+          .cartcontrol-wrapper
+            position: absolute
+            right: 0
+            bottom: 6px
+
+
 </style>
