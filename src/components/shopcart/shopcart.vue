@@ -187,6 +187,7 @@
           let ball = this.balls[count];
           if (ball.show) {
             let rect = ball.el.getBoundingClientRect();
+            console.log(`${rect.left} ${count}`);
             let x = rect.left - 32;
             let y = -(window.innerHeight - rect.top - 22);
             el.style.display = '';

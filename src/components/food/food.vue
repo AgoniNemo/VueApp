@@ -1,6 +1,6 @@
 <template>
   <transition>
-    <div v-show="showFlag" class="food">
+    <div v-show="showFlag" class="food" ref="food">
       <div class="food-content">
         <div class="image-header">
           <img :src="food.image">
@@ -15,6 +15,17 @@
             <span class="rating">好评率{{food.rating}}%</span>
           </div>
           <price class="price" :food="food"></price>
+          <div class="cartcontrol-wrapper">
+            <cartcontrol @cartAdd="events" :food="food"></cartcontrol>
+          </div>
+          <transition>
+            <div @click="addFirst($event)" class="buy" v-show="!food.count || food.count===0">加入购物车</div>
+          </transition>
+        </div>
+        <split v-show="food.info"></split>
+        <div class="info" v-show="food.info">
+          <h1 class="title">商品信息</h1>
+          <p class="text">{{food.info}}</p>
         </div>
       </div>
     </div>
@@ -23,6 +34,10 @@
 
 <script type="text/ecmascript-6">
   import price from 'components/price/price';
+  import BScroll from 'better-scroll';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import Vue from 'vue';
+  import split from 'components/split/split';
 
   export default {
     props: {
@@ -38,13 +53,37 @@
     methods: {
       show() {
         this.showFlag = true;
+        // nextTick里才能保证DOM是渲染的
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$refs['food'], {
+                click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
       },
       hide() {
         this.showFlag = false;
+      },
+      addFirst($event) {
+        if (!event._constructed) {
+          console.log(event.target.tagName);
+          return;
+        }
+        this.$emit('addFirst', $event.target);
+        Vue.set(this.food, 'count', 1);
+      },
+      events(target) {
+        console.log(target);
+        this.$emit('addFirst', target);
       }
     },
     components: {
-      price
+      price,
+      cartcontrol,
+      split
     }
   };
 </script>
@@ -85,6 +124,7 @@
           font-size: 20px
           color: #fff
     .content-food
+      position: relative
       padding: 18px
       .title
         line-height: 14px
@@ -95,10 +135,36 @@
       .detail
         margin-bottom: 18px
         line-height: 10px
+        height: 10px
         font-size: 0
-        .sell-count,.rating
+        .sell-count, .rating
           font-size: 10px
-          color: rbg(147,152,159)
+          color: rgb(147,153,159)
         .sell-count
-          margin-left: 12px
+          margin-right: 12px
+    .cartcontrol-wrapper
+      position: absolute
+      right: 12px
+      bottom: 12px
+    .buy
+      position: absolute
+      right: 18px
+      bottom: 18px
+      z-index: 10
+      height: 24px
+      line-height: 24px
+      padding: 0 12px
+      box-sizing: border-box
+      border-radius: 12px
+      font-size: 10px
+      color: #fff
+      background: rgb(0,160,220)
+      transition: all 0.1s
+    .buy.v-enter
+      opacity: 0
+    .buy.v-enter-to
+      opacity: 1
+    .buy.v-leave-active
+      opacity: 0
+
 </style>
