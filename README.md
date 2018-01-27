@@ -1,6 +1,6 @@
 # sell
 
-> 饿了吗？ app
+> 仿饿了么店家详情界面 app
 
 ## Build Setup
 
