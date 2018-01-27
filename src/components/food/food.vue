@@ -142,29 +142,29 @@
           color: rgb(147,153,159)
         .sell-count
           margin-right: 12px
-    .cartcontrol-wrapper
-      position: absolute
-      right: 12px
-      bottom: 12px
-    .buy
-      position: absolute
-      right: 18px
-      bottom: 18px
-      z-index: 10
-      height: 24px
-      line-height: 24px
-      padding: 0 12px
-      box-sizing: border-box
-      border-radius: 12px
-      font-size: 10px
-      color: #fff
-      background: rgb(0,160,220)
-      transition: all 0.1s
-    .buy.v-enter
-      opacity: 0
-    .buy.v-enter-to
-      opacity: 1
-    .buy.v-leave-active
-      opacity: 0
+      .cartcontrol-wrapper
+        position: absolute
+        right: 12px
+        bottom: 12px
+      .buy
+        position: absolute
+        right: 18px
+        bottom: 18px
+        z-index: 10
+        height: 24px
+        line-height: 24px
+        padding: 0 12px
+        box-sizing: border-box
+        border-radius: 12px
+        font-size: 10px
+        color: #fff
+        background: rgb(0,160,220)
+        transition: all 0.1s
+      .buy.v-enter
+        opacity: 0
+      .buy.v-enter-to
+        opacity: 1
+      .buy.v-leave-active
+        opacity: 0
 
 </style>
