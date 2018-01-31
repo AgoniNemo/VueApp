@@ -25,11 +25,7 @@
           return [];
         }
       },
-      selectType: {
-        type: Number,
-        default: ALL
-      },
-      onlyContent: {
+      onlyCt: {
         type: Boolean,
         default: false
       },
@@ -43,6 +39,15 @@
           };
         }
       }
+    },
+    beforeUpdate() {
+      this.onlyContent = this.onlyCt;
+    },
+    data() {
+      return {
+        onlyContent: false,
+        selectType: ALL
+      };
     },
     computed: {
       positives() {
