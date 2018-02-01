@@ -67,7 +67,6 @@
           console.log(event.target.tagName);
           return;
         }
-        console.log(type);
         this.selectType = type;
         this.$emit('ratingtypeSelect', type);
       },
