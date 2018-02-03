@@ -52,7 +52,9 @@
         <div class="pic-wrapper" ref="picWrapper">
           <ul class="pic-list" ref="picList">
             <li class="pic-item" v-for="pic in seller.pics">
-              <img :src="pic" width="120" height="90">
+              <div @click="imageClick(pic)">
+                <img :src="pic" width="120" height="90">
+              </div>
             </li>
           </ul>
         </div>
@@ -65,6 +67,16 @@
         </ul>
       </div>
     </div>
+    <transition>
+      <div v-show="imageShow" class="imageBackground">
+          <div class="imageBackground-close">
+            <i class="icon-close" @click="hiddenImage"></i>
+          </div>
+          <div class="image">
+            <img :src="imagePath" width="100%">
+          </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -73,6 +85,7 @@
   import split from 'components/split/split';
   import star from 'components/star/star';
   import {saveToLocal, loadFromLocal} from '@/common/js/store.js';
+  import '@/common/stylus/icon.styl';
 
   export default {
     props: {
@@ -84,7 +97,9 @@
       return {
         favorite: (() => {
             return loadFromLocal(this.seller.id, 'favorite', false);
-        })()
+        })(),
+        imageShow: false,
+        imagePath: ''
       };
     },
     computed: {
@@ -95,12 +110,20 @@
     watch: {
       'seller'() {
         this._initScroll();
+        this._initPics();
       }
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     },
     methods: {
+      imageClick(path) {
+        this.imagePath = path;
+        this.imageShow = true;
+      },
+      hiddenImage() {
+        this.imageShow = false;
+      },
       toggleFavorite(event) {
         if (!event._constructed) {
           console.log(event.target.tagName);
@@ -300,4 +323,27 @@
         font-size: 12px
         &:last-child
           border-none()
+    .imageBackground
+      position: fixed
+      z-index: 100
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      overflow: auto
+      background: rgba(0,0,0,0.8)
+      background-filter: blur(50px)
+    .imageBackground-close
+      font-size: 0
+      .icon-close
+        position: absolute
+        right: 12px
+        top: 14px
+        height: 24px
+        line-height: 24px
+        font-size: 32px
+        color: #fff
+    .image
+      position: relative
+      top: 20%
 </style>

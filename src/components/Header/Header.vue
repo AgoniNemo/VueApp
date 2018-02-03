@@ -155,7 +155,7 @@
           padding: 0 8px
           height: 24px
           line-height: 24px
-          border-radius 14px
+          border-radius: 14px
           background: rgba(0,0,0,0.2)
           text-align: center
           .count
