@@ -345,5 +345,6 @@
         color: #fff
     .image
       position: relative
-      top: 20%
+      top: 50%
+      transform: translate(0, -50%)
 </style>
