@@ -68,7 +68,7 @@
       </div>
     </div>
     <transition>
-      <div v-show="imageShow" class="imageBackground">
+      <div v-show="imageShow" class="imageBackground" @touchmove.stop>
           <div class="imageBackground-close">
             <i class="icon-close" @click="hiddenImage"></i>
           </div>
@@ -325,26 +325,26 @@
           border-none()
     .imageBackground
       position: fixed
-      z-index: 100
       top: 0
       left: 0
       width: 100%
       height: 100%
+      z-index: 20
       overflow: auto
       background: rgba(0,0,0,0.8)
       background-filter: blur(50px)
-    .imageBackground-close
-      font-size: 0
-      .icon-close
-        position: absolute
-        right: 12px
-        top: 14px
-        height: 24px
-        line-height: 24px
-        font-size: 32px
-        color: #fff
-    .image
-      position: relative
-      top: 50%
-      transform: translate(0, -50%)
+      .imageBackground-close
+        font-size: 0
+        .icon-close
+          position: absolute
+          right: 12px
+          top: 14px
+          height: 24px
+          line-height: 24px
+          font-size: 32px
+          color: #fff
+      .image
+        position: relative
+        top: 50%
+        transform: translate(0, -50%)
 </style>

@@ -387,7 +387,7 @@
       height: 100%
       z-index: 40
       background: rgba(7,17,27,0.6)
-      background-filter blur(10px)
+      background-filter: blur(10px)
       transition: all 1.3s
     .list-mask.v-enter
       opacity: 0
